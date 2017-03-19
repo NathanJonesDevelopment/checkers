@@ -36,13 +36,10 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
-    "node-static": "^0.7.9",
+    "express": "^4.15.2",
     "react": "^15.4.2",
-    "react-addons-css-transition-group": "^15.4.2",
     "react-dom": "^15.4.2",
-    "react-parallax": "^1.2.3",
     "react-redux-utilities": "^1.0.7",
-    "react-scroll": "^1.4.5",
     "styled-components": "^1.4.4"
   }
 }

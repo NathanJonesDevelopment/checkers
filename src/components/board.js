@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Component } from 'react-redux-utilities'
-import styled, { keyframes } from 'styled-components'
 import Square from './square'
 
 export default Component({

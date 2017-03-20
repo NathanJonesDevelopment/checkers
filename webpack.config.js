@@ -74,7 +74,6 @@ module.exports = {
 
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
-		new ExtractTextPlugin("styles.css"),
 		new CopyWebpackPlugin([{from: 'src/assets/', force: true}], {copyUnmodified: true})
 	]
 };

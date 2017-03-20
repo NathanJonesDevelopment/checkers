@@ -1,5 +1,5 @@
 {
-  "name": "react-redux-kickstart",
+  "name": "Checkers",
   "version": "1.0.0",
   "description": "A basic environment for writing React + Redux apps in ES6/ES7 using webpack",
   "private": true,
@@ -21,28 +21,17 @@
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
     "copy-webpack-plugin": "^4.0.1",
-    "css-loader": "^0.23.1",
-    "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.10.0",
-    "node-sass": "^3.2.0",
-    "postcss-loader": "^0.8.0",
     "react-hot-loader": "^1.2.8",
-    "sass-loader": "^3.1.2",
     "source-map-loader": "^0.1.5",
-    "style-loader": "^0.13.0",
     "url-loader": "^0.5.7",
     "webpack": "^1.11.0",
     "webpack-dev-server": "^1.10.1"
   },
   "dependencies": {
-    "classnames": "^2.2.5",
     "express": "^4.15.2",
     "react": "^15.4.2",
-    "react-addons-css-transition-group": "^15.4.2",
     "react-dom": "^15.4.2",
-    "react-parallax": "^1.2.3",
-    "react-redux-utilities": "^1.0.7",
-    "react-scroll": "^1.4.5",
-    "styled-components": "^1.4.4"
+    "react-redux-utilities": "^1.0.7"
   }
 }

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Actions } from 'react-redux-utilities'
-import styled from 'styled-components'
 
 export default function Square(props) {
 	const {id, row, piece, color, selected, selectedSquare, currentPlayer, canMoveHere} = props

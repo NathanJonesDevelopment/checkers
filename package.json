@@ -1,7 +1,7 @@
 {
   "name": "Checkers",
   "version": "1.0.0",
-  "description": "A basic environment for writing React + Redux apps in ES6/ES7 using webpack",
+  "description": "react + redux + express environment for a checkers app",
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,9 +9,7 @@
     "web-server": "http-server -p 3000 .",
     "start": "node build/index.js"
   },
-  "keywords": [
-    "demo"
-  ],
+  "keywords": [],
   "author": "Nathan Jones",
   "devDependencies": {
     "autoprefixer-loader": "^3.1.0",

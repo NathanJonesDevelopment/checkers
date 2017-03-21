@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpack-server": "webpack-dev-server --hot --progress --colors",
     "web-server": "http-server -p 3000 .",
-    "start": "node index.js"
+    "start": "node server/server.js"
   },
   "keywords": [],
   "author": "Nathan Jones",

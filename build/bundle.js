@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "0d7e55c52dbe66bcad73"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "2cf97df4737f79555428"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -43102,7 +43102,7 @@
 			this.setState(size);
 		},
 		fetchData: function fetchData() {
-			var ws = new _ws2.default('http://playcheckerswithme.herokuapp.com/', { perMessageDeflate: false });
+			var ws = new _ws2.default('ws://playcheckerswithme.herokuapp.com/', { perMessageDeflate: false });
 			ws.on('open', function () {
 				var num = Math.random();
 				ws.send(num);

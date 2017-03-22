@@ -23,7 +23,7 @@ export default Component({
 		this.setState(size)
 	},
 	fetchData() {
-		const ws = new WebSocket('http://playcheckerswithme.herokuapp.com/', {perMessageDeflate: false})
+		const ws = new WebSocket('ws://playcheckerswithme.herokuapp.com/', {perMessageDeflate: false})
 		ws.on('open', function() {
 			var num = Math.random()
 			ws.send(num)

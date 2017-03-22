@@ -27,8 +27,10 @@
   },
   "dependencies": {
     "express": "^4.15.2",
+    "node-fetch": "^1.6.3",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
-    "react-redux-utilities": "^1.0.7"
+    "react-redux-utilities": "^1.0.7",
+    "ws": "^2.2.2"
   }
 }

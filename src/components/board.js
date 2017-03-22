@@ -2,10 +2,13 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Component } from 'react-redux-utilities'
 import Square from './square'
+import 'whatwg-fetch'
+import WebSocket from 'ws'
+
 
 export default Component({
 	getInitialState() {
-		return {width: '70vw', height: '70vw'}
+		return {width: '70vw', height: '70vw'}                  
 	},
 	componentDidMount() {
 		window.addEventListener('resize', this.handleResize)
@@ -18,6 +21,17 @@ export default Component({
 		const {height, width} = document.body.getBoundingClientRect()
 		const size = height < width ? {height: '65vh', width: '65vh'} : {height: '70vw', width: '70vw'}
 		this.setState(size)
+	},
+	fetchData() {
+		const ws = new WebSocket('http://playcheckerswithme.herokuapp.com/', {perMessageDeflate: false})
+		ws.on('open', function() {
+			var num = Math.random()
+			ws.send(num)
+			console.log('Sent number: ' + num)
+		})
+		ws.on('message', function(message) {
+			console.log('Received number: %s', message)
+		})
 	},
 	render() {
 		const {currentPlayer, squares} = this.props
@@ -35,19 +49,15 @@ export default Component({
 			fontSize: '100%'
 		}
 		return (
-			<div>
-				<h1 style={{textAlign: 'center'}}>{`${currentPlayer.name} (${currentPlayer.color})`}</h1>
-				<h2>Your Move</h2>
-				<div style={style}>
-					{squares.map(square => {
-						const move = availableMoves && availableMoves.filter(m => m.id === square.id)[0]
-						const canMoveHere = move != null
-						const {id, row, piece, color, selected} = square
-						return <Square key={id} id={id} row={row} piece={piece} color={color} 
-							selected={selected} selectedSquare={selectedSquare}
-							currentPlayer={currentPlayer} canMoveHere={canMoveHere} />
-					})}
-				</div>
+			<div style={style} onClick={this.fetchData}>
+				{squares.map(square => {
+					const move = availableMoves && availableMoves.filter(m => m.id === square.id)[0]
+					const canMoveHere = move != null
+					const {id, row, piece, color, selected} = square
+					return <Square key={id} id={id} row={row} piece={piece} color={color} 
+						selected={selected} selectedSquare={selectedSquare}
+						currentPlayer={currentPlayer} canMoveHere={canMoveHere} />
+				})}
 			</div>
 		);
 	}

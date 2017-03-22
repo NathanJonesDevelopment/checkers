@@ -13,7 +13,7 @@ function getEntrySources(sources) {
 }
 
 module.exports = {
-	entry: getEntrySources(['./src/app.js']),
+	entry: getEntrySources(['whatwg-fetch', './src/app.js']),
 
 	output: {
 		filename: 'bundle.js',

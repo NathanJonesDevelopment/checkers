@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "f09fef3bf27d0cb1d398"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "f865c5a7ddc4ce10ffd6"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -25529,7 +25529,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var socket = _socket2.default.connect('http://localhost:3000');
+	var socket = _socket2.default.connect('http://playcheckerswithme.herokuapp.com');
 	
 	/*
 	import WebSocket from 'ws'

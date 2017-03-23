@@ -127,4 +127,4 @@ var io = require('socket.io').listen(server);
 
 app.use(express.static(path.join(__dirname + '/../build')));
 
-server.listen(3000);
+server.listen(process.env.PORT || 3000);

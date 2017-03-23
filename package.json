@@ -26,11 +26,14 @@
     "webpack-dev-server": "^1.10.1"
   },
   "dependencies": {
+    "cors": "^2.8.1",
     "express": "^4.15.2",
+    "express-ws": "^3.0.0",
     "node-fetch": "^1.6.3",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux-utilities": "^1.0.7",
+    "socket.io": "^1.7.3",
     "ws": "^2.2.2"
   }
 }

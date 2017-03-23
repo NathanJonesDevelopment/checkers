@@ -3,7 +3,24 @@ import ReactDOM from 'react-dom'
 import { Component } from 'react-redux-utilities'
 import Square from './square'
 import 'whatwg-fetch'
+
+/*
 import WebSocket from 'ws'
+
+const ws = new WebSocket('ws://60.226.101.70:3000')
+ws.on('open', function() {
+	console.log('Sent number: ' + num)
+	const num = Math.random()
+	ws.send(num)
+})
+ws.on('message', function(message) {
+	console.log('Received number: %s', message)
+})
+*/
+
+
+import io from 'socket.io-client'
+const socket = io.connect('http://localhost:3000')
 
 
 export default Component({
@@ -23,15 +40,7 @@ export default Component({
 		this.setState(size)
 	},
 	fetchData() {
-		const ws = new WebSocket('ws://playcheckerswithme.herokuapp.com/', {perMessageDeflate: false})
-		ws.on('open', function() {
-			var num = Math.random()
-			ws.send(num)
-			console.log('Sent number: ' + num)
-		})
-		ws.on('message', function(message) {
-			console.log('Received number: %s', message)
-		})
+		
 	},
 	render() {
 		const {currentPlayer, squares} = this.props

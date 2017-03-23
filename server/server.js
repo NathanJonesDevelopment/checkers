@@ -15,8 +15,6 @@ server.listen(process.env.PORT || 3000, function(){
 });
 
 
-
-
 var WebSocketServer = require('ws').Server;
 var wss = new WebSocketServer({server});
 
@@ -30,6 +28,9 @@ wss.on('connection', function(ws) {
 */
 
 
+
+
+/*
 var express = require('express');
 var http = require('http');
 var url = require('url');
@@ -59,3 +60,71 @@ wss.on('connection', function connection(ws) {
 server.listen(process.env.PORT || 3000, function listening() {
 	console.log('Listening on %d', server.address().port);
 });
+*/
+
+
+
+/*
+var express = require('express');
+var app = express();
+var expressWs = require('express-ws')(app);
+var path = require('path');
+ 
+app.use(express.static(path.join(__dirname + '/../build')));
+ 
+app.ws('/', function(ws, req) {
+  ws.on('message', function(msg) {
+    console.log('server recieved: ' + msg);
+  });
+  console.log('new socket');
+});
+ 
+app.listen(process.env.PORT || 3000);
+*/
+
+
+/*
+var express = require('express')
+var http = require('http');
+var socket = require('socket.io');
+var path = require('path');
+
+var app = express();
+var server = http.Server(app);
+var io = socket(http)
+
+app.use(express.static(path.join(__dirname + '/../build')));
+
+io.on('connection', function(socket){
+  console.log('a user connected');
+});
+
+server.listen(3000, function(){
+  console.log('listening on *:3000');
+});
+*/
+
+
+
+/*
+var socket = require('socket.io-client')('http://localhost');
+socket.on('connect', function(socket) {
+	console.log('a user connected');
+});
+socket.on('event', function(data){});
+socket.on('disconnect', function(){});
+*/
+
+
+
+
+var express = require('express');
+var http = require('http');
+var app = express();
+var path = require('path');
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);
+
+app.use(express.static(path.join(__dirname + '/../build')));
+
+server.listen(3000);

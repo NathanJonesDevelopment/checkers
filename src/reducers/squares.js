@@ -16,7 +16,7 @@ for (let row = 8; row >= 1; row--) {
 export default Reducer(initialSquares, {
 	movePiece: (state, moveData) => {
 		return state.map(square => {
-			if (square.id === moveData.startPos) return {...square, piece: null}
+			if (square.id === moveData.startPos || square.id === moveData.jumpPos) return {...square, piece: null}
 			else if (square.id === moveData.endPos) return {...square, piece: moveData.piece}
 			else return square
 		})
@@ -25,5 +25,8 @@ export default Reducer(initialSquares, {
 		return state.map(square => ({...square, 
 			selected: square.id === squareToToggle ? !square.selected : false
 		}))
+	},
+	removePiece: (state, id) => {
+		return state.map(square => square.id === id ? {...square, piece: null} : square)
 	}
 })

@@ -1,0 +1,31 @@
+html
+	head
+		meta(name="viewport" content="width=device-width, initial-scale=1.0")
+		title Play Checkers With Me :)
+		link(href="styles.css" rel="stylesheet")
+		style(type='text/css').
+			* {
+				margin: 0px;
+				padding: 0px;
+			}
+			html, body {
+				width: 100%;
+				height: 100%;
+				color: #fff;
+				background: #009EE8;
+				background-image: linear-gradient(135deg, #7DD7F2, #00CEA5);
+				font-family: 'Courier New';
+			}
+			#root {
+				overflow: hidden;
+			}
+	body
+		#root
+		script(src="/socket.io/socket.io.js")
+		script.
+			window.gameID = "#{gameID}";
+			window.socket = io.connect('ws://192.168.0.4:3000');
+			window.socket.on('connect', function() {
+				window.socket.emit('joinGame', "#{gameID}");
+			});
+		script(src="/bundle.js")

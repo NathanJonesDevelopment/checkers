@@ -1,0 +1,48 @@
+html
+	head
+		meta(name="viewport" content="width=device-width, initial-scale=1.0")
+		title Play Checkers With Me :)
+		link(rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css")
+		link(rel="stylesheet" href="styles.css")
+		style(type='text/css').
+			* {
+				margin: 0px;
+				padding: 0px;
+			}
+			html, body {
+				width: 100%;
+				height: 100%;
+				color: #fff;
+				background: #009EE8;
+				background-image: linear-gradient(135deg, #7DD7F2, #00CEA5);
+				font-family: 'Courier New'
+			}
+	body
+		div(class="gameOptions")
+			div(class="container")
+				div(class="row")
+					div(class="col")
+						h1(class="banner") Checkers
+				div(class="row")
+					div(class="col-xs-12 col-sm-6")
+						button(onclick="startSignlePlayer()") Single Player
+					div(class="col-xs-12 col-sm-6")
+						button(onClick="startMultiPlayer()") MultiPlayer
+		#root(style="display:none;")
+		script(src="/lib/promise-min.js")
+		script(src="/bundle.js")
+		script(src="/socket.io/socket.io.js")
+		script.
+			function startSignlePlayer() { 
+				document.querySelector('.gameOptions').style.display = 'none';
+				document.getElementById('root').style.display = 'block';
+			}
+			function startMultiPlayer() {
+				fetch('http://playcheckerswithme.herokuapp.com/startGame')
+					.then(function(res) { 
+						return res.text();
+					})
+					.then(function(gameID) {
+						return document.location.href = 'http://playcheckerswithme.herokuapp.com/game/' + gameID;
+					});
+			}

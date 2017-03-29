@@ -1,20 +1,83 @@
 import React from 'react'
-import { Component, Render } from 'react-redux-utilities'
+import { Reducer, Component, Actions, Render } from 'react-redux-utilities'
+import Bootstrap from 'bootstrap/dist/css/bootstrap.css'
+import { Grid, Row, Col } from 'react-bootstrap'
+import 'whatwg-fetch'
+import css from './style.scss'
 import players from './reducers/players'
 import squares from './reducers/squares'
 import Board from './components/board'
 
-const App = Component({
-    render() {
-        const {currentPlayer} = this.props
-        return (
-            <div>
-                <h1 style={{textAlign: 'center'}}>{`${currentPlayer.name} (${currentPlayer.color})`}</h1>
-                <h2>Your Move</h2>
-                <Board />
-            </div>
-        )
-    }
-}, state => ({currentPlayer: state.players.filter(player => player.active === true)[0]}))
+const playersReady = Reducer(false, {playersReady: () => true})
+const playerColor = Reducer('red', {setPlayerColor: (state, color) => color})
+const myTurn = Reducer(true, {toggleMyTurn: (state, action) => !state})
 
-Render({squares, players}, <App />)
+if (window.socket) {
+	let playersReady = false
+	let playerColor = 'red'
+	window.socket.on('opponentMoved', moveData => {
+		Actions.movePiece(moveData)
+	})
+	window.socket.on('assignPlayerColor', color => {
+		if (color === 'black') {
+			Actions.switchPlayer()
+			Actions.toggleMyTurn()
+		}
+	})
+	window.socket.on('switchPlayer', () => Actions.toggleMyTurn())
+	window.socket.on('playersReady', () => Actions.playersReady())
+}
+
+/*
+const style = {
+	currentPlayer: {
+		col: {
+			height: '7%',
+			border: 'solid 3px red',
+			textAlign: 'center',
+		},
+		h2: {
+			fontSize: '5vw'
+		}
+	}
+}
+*/
+
+const App = Component({
+	selectText(e) {
+		e.target.select()
+	},
+	render() {
+		const {playersReady, currentPlayer, myTurn} = this.props
+		if (!playersReady && window.socket) return (
+			<div>
+				<h1>Waiting for Opponent...</h1>
+				<h2>
+					Send this link to a friend to start a game: 
+				</h2>
+				<input type='text' onClick={this.selectText} value={`https://playcheckerswithme.hrokuapp.com/game/${window.gameID}`} />
+			</div>
+		)
+		else return (
+			<div style={{overflow: 'hidden'}}>
+				<Grid className="currentPlayer">
+					<Row>
+						<Col xs={12} sm={12}>
+							<h1>{window.socket && !myTurn ? 'Opponents Turn...' : `${currentPlayer.name} (${currentPlayer.color})`}</h1>
+						</Col>
+						<Col xs={12} sm={12}>
+							<h2>{window.socket && myTurn ? 'Your Move' : ''}</h2>
+						</Col>
+					</Row>
+				</Grid>
+				<Board />
+			</div>
+		)
+	}
+}, state => ({
+	currentPlayer: state.players.filter(player => player.active === true)[0],
+	playersReady: state.playersReady,
+	myTurn: state.myTurn
+}))
+
+Render({squares, players, playersReady, playerColor, myTurn}, <App />)

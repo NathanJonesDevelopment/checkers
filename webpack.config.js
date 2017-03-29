@@ -47,6 +47,10 @@ module.exports = {
 				loaders: ['react-hot', 'babel-loader?presets[]=es2015,presets[]=react,presets[]=stage-0'],
 			},
 			{
+				test: /\.css$/,
+				loader: ExtractTextPlugin.extract('style-loader', 'css-loader?sourceMap!autoprefixer?browsers=last 3 versions')
+			},
+			{
 				test: /\.scss$/,
 				loader: ExtractTextPlugin.extract(
 					'style-loader',
@@ -74,6 +78,7 @@ module.exports = {
 
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
+		new ExtractTextPlugin("styles.css"),
 		new CopyWebpackPlugin([{from: 'src/assets/', force: true}], {copyUnmodified: true})
 	]
 };

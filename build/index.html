@@ -21,5 +21,12 @@
 <body>
 	<div id="root"></div>
 	<script src="/bundle.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		document.body.addEventListener('click', function(e) {
+			var socket = io.connect('ws://192.168.0.4:3000');
+			socket.on('news', data => console.log(data));
+		});
+	</script>
 </body>
 </html>

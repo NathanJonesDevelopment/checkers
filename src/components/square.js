@@ -2,18 +2,36 @@ import React, { Component } from 'react'
 import { Actions } from 'react-redux-utilities'
 
 export default function Square(props) {
-	const {id, row, piece, color, selected, selectedSquare, currentPlayer, canMoveHere} = props
+	const {id, row, column, piece, color, selected, selectedSquare, jump, currentPlayer, canMoveHere, myTurn} = props
 	const handleClick = () => {
-		if (piece && piece.color === currentPlayer.color) Actions.setSelected(id)
-		else if (canMoveHere) {
-			Actions.setSelected(selectedSquare.id)
-			Actions.movePiece({
-				startPos: selectedSquare.id,
-				endPos: id,
-				piece: selectedSquare.piece
-			})
-			if (Math.abs(row - selectedSquare.row) === 1) Actions.switchPlayer()
-			else Actions.setSelected(id)
+		if ((window.socket && myTurn) || !window.socket) {
+			if (piece && piece.color === currentPlayer.color) Actions.setSelected(id)
+			else if (canMoveHere) {
+				Actions.setSelected(selectedSquare.id)
+				Actions.movePiece({
+					startPos: selectedSquare.id,
+					endPos: id,
+					jump: jump,
+					piece: selectedSquare.piece
+				})
+
+				if (window.socket) {
+					window.socket.emit('sendMove', window.gameID, {
+						startPos: selectedSquare.id,
+						endPos: id,
+						piece: selectedSquare.piece
+					})
+					if (Math.abs(row - selectedSquare.row) === 1) {
+						Actions.toggleMyTurn()
+						window.socket.emit('switchPlayer', window.gameID)
+					}
+					else Actions.setSelected(id)
+				}
+				else {
+					if (Math.abs(row - selectedSquare.row) === 1) Actions.switchPlayer()
+					else Actions.setSelected(id)
+				}
+			}
 		}
 	}
 	const style = {
@@ -34,7 +52,7 @@ export default function Square(props) {
 			top: '50%',
 			left: '50%',
 			transition: 'all 2s ease-in-out',
-			transform: 'translate(-50%, -50%)' + (currentPlayer.color === 'black' ? ' rotateZ(-180deg)' : '')
+			transform: 'translate(-50%, -50%)' + (currentPlayer.color === 'black' ? ' rotate(-180deg)' : '')
 		}
 	}
 	return (

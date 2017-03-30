@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "e7d809dd180868a404c4"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "cae788653eb0a5be4921"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -1155,6 +1155,11 @@
 				'div',
 				null,
 				_react2.default.createElement(
+					'a',
+					{ href: 'http://localhost:3000', className: 'newGameBtn' },
+					'New Game'
+				),
+				_react2.default.createElement(
 					'h1',
 					null,
 					'Waiting for Opponent...'
@@ -1164,34 +1169,27 @@
 					null,
 					'Send this link to a friend to start a game:'
 				),
-				_react2.default.createElement('input', { type: 'text', onClick: this.selectText, value: 'https://playcheckerswithme.hrokuapp.com/game/' + window.gameID })
+				_react2.default.createElement('input', { type: 'text', onClick: this.selectText, value: 'http://playcheckerswithme.herokuapp.com/game/' + window.gameID })
 			);else return _react2.default.createElement(
 				'div',
 				{ style: { overflow: 'hidden' } },
 				_react2.default.createElement(
-					_reactBootstrap.Grid,
+					'a',
+					{ href: 'http://playcheckerswithme.herokuapp.com', className: 'newGameBtn' },
+					'New Game'
+				),
+				_react2.default.createElement(
+					'div',
 					{ className: 'currentPlayer' },
 					_react2.default.createElement(
-						_reactBootstrap.Row,
+						'h1',
 						null,
-						_react2.default.createElement(
-							_reactBootstrap.Col,
-							{ xs: 12, sm: 12 },
-							_react2.default.createElement(
-								'h1',
-								null,
-								window.socket && !myTurn ? 'Opponents Turn...' : currentPlayer.name + ' (' + currentPlayer.color + ')'
-							)
-						),
-						_react2.default.createElement(
-							_reactBootstrap.Col,
-							{ xs: 12, sm: 12 },
-							_react2.default.createElement(
-								'h2',
-								null,
-								window.socket && myTurn ? 'Your Move' : ''
-							)
-						)
+						window.socket && !myTurn ? 'Opponents Turn...' : currentPlayer.name + ' (' + currentPlayer.color + ')'
+					),
+					_react2.default.createElement(
+						'h2',
+						null,
+						window.socket && myTurn ? 'Your Move' : ''
 					)
 				),
 				_react2.default.createElement(_board2.default, null)
@@ -44750,9 +44748,9 @@
 	var initialSquares = [];
 	for (var row = 8; row >= 1; row--) {
 		for (var column = 1; column <= 8; column++) {
-			var color = (row + column) % 2 === 0 ? '#5d3000' : '#EED';
+			var color = (row + column) % 2 === 0 ? '#7d5020' : '#EED';
 			var piece = null;
-			if (color === '#5d3000') {
+			if (color === '#7d5020') {
 				if (row === 1 || row === 2) piece = { color: 'red', king: false };
 				if (row === 7 || row === 8) piece = { color: 'black', king: false };
 			}
@@ -44829,7 +44827,7 @@
 			    height = _document$body$getBou.height,
 			    width = _document$body$getBou.width;
 	
-			var size = height < width ? { height: '65vh', width: '65vh' } : { height: '70vw', width: '70vw' };
+			var size = height < width ? { height: '60vh', width: '60vh' } : { height: '70vw', width: '70vw' };
 			this.setState(size);
 		},
 		fetchData: function fetchData() {},
@@ -44853,7 +44851,7 @@
 				borderColor: '#EDA070',
 				transition: !window.socket ? 'transform 2s ease-in-out' : 'none',
 				transform: currentPlayer.color === 'black' ? 'rotateZ(-180deg)' : 'none',
-				margin: '5vh auto',
+				margin: '3vh auto 0px auto',
 				fontSize: '100%'
 			};
 			return _react2.default.createElement(

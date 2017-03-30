@@ -3,9 +3,9 @@ import { Reducer } from 'react-redux-utilities'
 const initialSquares = []
 for (let row = 8; row >= 1; row--) {
 	for (let column = 1; column <= 8; column++) {
-		const color = (row + column) % 2 === 0 ? '#5d3000' : '#EED'
+		const color = (row + column) % 2 === 0 ? '#7d5020' : '#EED'
 		let piece = null
-		if (color === '#5d3000') {
+		if (color === '#7d5020') {
 			if (row === 1 || row === 2) piece = {color: 'red', king: false}
 			if (row === 7 || row === 8) piece = {color: 'black', king: false}
 		}

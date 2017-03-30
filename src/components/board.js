@@ -16,7 +16,7 @@ export default Component({
 	},
 	handleResize() {
 		const {height, width} = document.body.getBoundingClientRect()
-		const size = height < width ? {height: '65vh', width: '65vh'} : {height: '70vw', width: '70vw'}
+		const size = height < width ? {height: '60vh', width: '60vh'} : {height: '70vw', width: '70vw'}
 		this.setState(size)
 	},
 	fetchData() {
@@ -36,7 +36,7 @@ export default Component({
 			borderColor: '#EDA070',
 			transition: !window.socket ? 'transform 2s ease-in-out' : 'none',
 			transform: currentPlayer.color === 'black' ? 'rotateZ(-180deg)' : 'none',
-			margin: '5vh auto',
+			margin: '3vh auto 0px auto',
 			fontSize: '100%'
 		}
 		return (

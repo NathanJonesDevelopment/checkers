@@ -51,25 +51,21 @@ const App = Component({
 		const {playersReady, currentPlayer, myTurn} = this.props
 		if (!playersReady && window.socket) return (
 			<div>
+				<a href="http://localhost:3000" className='newGameBtn'>New Game</a>
 				<h1>Waiting for Opponent...</h1>
 				<h2>
 					Send this link to a friend to start a game: 
 				</h2>
-				<input type='text' onClick={this.selectText} value={`https://playcheckerswithme.hrokuapp.com/game/${window.gameID}`} />
+				<input type='text' onClick={this.selectText} value={`http://playcheckerswithme.herokuapp.com/game/${window.gameID}`} />
 			</div>
 		)
 		else return (
 			<div style={{overflow: 'hidden'}}>
-				<Grid className="currentPlayer">
-					<Row>
-						<Col xs={12} sm={12}>
-							<h1>{window.socket && !myTurn ? 'Opponents Turn...' : `${currentPlayer.name} (${currentPlayer.color})`}</h1>
-						</Col>
-						<Col xs={12} sm={12}>
-							<h2>{window.socket && myTurn ? 'Your Move' : ''}</h2>
-						</Col>
-					</Row>
-				</Grid>
+				<a href="http://playcheckerswithme.herokuapp.com" className='newGameBtn'>New Game</a>
+				<div className="currentPlayer">
+					<h1>{window.socket && !myTurn ? 'Opponents Turn...' : `${currentPlayer.name} (${currentPlayer.color})`}</h1>
+					<h2>{window.socket && myTurn ? 'Your Move' : ''}</h2>
+				</div>
 				<Board />
 			</div>
 		)

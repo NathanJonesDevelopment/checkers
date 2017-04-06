@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "cae788653eb0a5be4921"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "a052c3b3f381fa468437"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -1109,8 +1109,10 @@
 	if (window.socket) {
 		var _playersReady = false;
 		var _playerColor = 'red';
-		window.socket.on('opponentMoved', function (moveData) {
+		window.socket.on('opponentMoved', function (moveData, jump) {
 			_reactReduxUtilities.Actions.movePiece(moveData);
+			moveData.jump && _reactReduxUtilities.Actions.removePiece(moveData.jump);
+			moveData.makeKing && _reactReduxUtilities.Actions.makeKing(moveData.endPos);
 		});
 		window.socket.on('assignPlayerColor', function (color) {
 			if (color === 'black') {
@@ -1126,25 +1128,7 @@
 		});
 	}
 	
-	/*
-	const style = {
-		currentPlayer: {
-			col: {
-				height: '7%',
-				border: 'solid 3px red',
-				textAlign: 'center',
-			},
-			h2: {
-				fontSize: '5vw'
-			}
-		}
-	}
-	*/
-	
 	var App = (0, _reactReduxUtilities.Component)({
-		selectText: function selectText(e) {
-			e.target.select();
-		},
 		render: function render() {
 			var _props = this.props,
 			    playersReady = _props.playersReady,
@@ -1169,13 +1153,15 @@
 					null,
 					'Send this link to a friend to start a game:'
 				),
-				_react2.default.createElement('input', { type: 'text', onClick: this.selectText, value: 'http://playcheckerswithme.herokuapp.com/game/' + window.gameID })
+				_react2.default.createElement('input', { type: 'text', onClick: function onClick(e) {
+						return e.target.select();
+					}, value: 'http://localhost:3000/game/' + window.gameID })
 			);else return _react2.default.createElement(
 				'div',
 				{ style: { overflow: 'hidden' } },
 				_react2.default.createElement(
 					'a',
-					{ href: 'http://playcheckerswithme.herokuapp.com', className: 'newGameBtn' },
+					{ href: 'http://localhost:3000', className: 'newGameBtn' },
 					'New Game'
 				),
 				_react2.default.createElement(
@@ -44759,11 +44745,6 @@
 	}
 	
 	exports.default = (0, _reactReduxUtilities.Reducer)(initialSquares, {
-		movePiece: function movePiece(state, moveData) {
-			return state.map(function (square) {
-				if (square.id === moveData.startPos || square.id === moveData.jumpPos) return _extends({}, square, { piece: null });else if (square.id === moveData.endPos) return _extends({}, square, { piece: moveData.piece });else return square;
-			});
-		},
 		setSelected: function setSelected(state, squareToToggle) {
 			return state.map(function (square) {
 				return _extends({}, square, {
@@ -44771,9 +44752,19 @@
 				});
 			});
 		},
+		movePiece: function movePiece(state, moveData) {
+			return state.map(function (square) {
+				if (square.id === moveData.startPos) return _extends({}, square, { piece: null });else if (square.id === moveData.endPos) return _extends({}, square, { piece: moveData.piece });else return square;
+			});
+		},
 		removePiece: function removePiece(state, id) {
 			return state.map(function (square) {
 				return square.id === id ? _extends({}, square, { piece: null }) : square;
+			});
+		},
+		makeKing: function makeKing(state, id) {
+			return state.map(function (square) {
+				return square.id === id ? _extends({}, square, { piece: _extends({}, square.piece, { king: true }) }) : square;
 			});
 		}
 	});
@@ -44840,7 +44831,7 @@
 			var selectedSquare = squares.filter(function (square) {
 				return square.selected;
 			})[0];
-			var moves = selectedSquare && getAvailableMoves(selectedSquare, squares, this.props.currentPlayer);
+			var moves = selectedSquare && getAvailableMoves(selectedSquare, squares, currentPlayer);
 			var availableMoves = moves && moves.availableMoves;
 			var jumps = moves && (moves.jumps || null);
 			var style = {
@@ -44859,13 +44850,13 @@
 				{ style: style, onClick: this.fetchData },
 				squares.map(function (square) {
 					var jump = jumps && jumps.filter(function (j) {
-						return j.row - selectedSquare.row > 0 === square.row - selectedSquare.row > 0 && j.column - selectedSquare.column > 0 === square.column - selectedSquare.column > 0;
-					});
+						return j.pos.row - selectedSquare.row > 0 === square.row - selectedSquare.row > 0 && j.pos.column - selectedSquare.column > 0 === square.column - selectedSquare.column > 0;
+					})[0];
 					var canMoveHere = availableMoves && availableMoves.filter(function (m) {
-						return m.id === square.id;
+						return m.pos.id === square.id;
 					})[0] != null;
 					return _react2.default.createElement(_square2.default, _extends({ key: square.id }, square, { selectedSquare: selectedSquare, myTurn: myTurn,
-						jump: jump, currentPlayer: currentPlayer, canMoveHere: canMoveHere }));
+						jump: jump && jump.pos.id, currentPlayer: currentPlayer, canMoveHere: canMoveHere }));
 				})
 			);
 		}
@@ -44882,47 +44873,65 @@
 	
 	function getAvailableMoves(_ref, squares, player) {
 		var row = _ref.row,
-		    column = _ref.column;
+		    column = _ref.column,
+		    piece = _ref.piece;
 	
 	
-		// get all squares where they are diagonaly positioned, and are within 1 or 2 places of each other
+		// get the position and direction of all squares where they are diagonaly positioned, 
+		// and are within 1 or 2 places of each other
 		var possibleMoves = squares.filter(function (sq) {
 			return [1, 2].map(function (distance) {
 				return sq.row === row + distance && sq.column === column + distance || sq.row === row + distance && sq.column === column - distance || sq.row === row - distance && sq.column === column + distance || sq.row === row - distance && sq.column === column - distance;
 			}).reduce(function (a, b) {
 				return a || b;
 			});
+		}).map(function (sq) {
+			return { pos: sq, direction: {
+					row: sq.row - row > 0,
+					column: sq.column - column > 0
+				} };
 		});
+	
+		//remove backwards moves if the piece is not kinged
+		if (!piece.king) {
+			possibleMoves = possibleMoves.filter(function (sq) {
+				return player.color === 'red' && sq.pos.row > row || player.color === 'black' && sq.pos.row < row;
+			});
+		}
 	
 		// separate possible moves into adjacent moves and jump moves
 		var adjacentMoves = possibleMoves.filter(function (move) {
-			return Math.abs(move.row - row) === 1;
+			return Math.abs(move.pos.row - row) === 1;
 		});
 		var jumpMoves = possibleMoves.filter(function (move) {
-			return Math.abs(move.row - row) === 2;
+			return Math.abs(move.pos.row - row) === 2;
 		});
 	
 		// find all available adjacent and jump moves
 		var availableAdjacentMoves = adjacentMoves.filter(function (move) {
-			return !move.piece;
+			return !move.pos.piece;
 		});
 		var jumpableSquares = [];
 		var availableJumpMoves = jumpMoves.filter(function (jump) {
 			// get the square being jumped
 			var squareToJump = adjacentMoves.filter(function (adjacent) {
-				return jump.row - row > 0 === adjacent.row - row > 0 && jump.column - column > 0 === adjacent.column - column > 0;
+				return jump.direction.row === adjacent.direction.row && jump.direction.column === adjacent.direction.column;
 			})[0];
+			console.log(squareToJump.pos.id + ": " + squareToJump.pos.piece);
 	
 			// add it to jumpableSquares, so we can removed it if it gets jumped
-			jumpableSquares.push(squareToJump);
+			squareToJump && squareToJump.pos.piece && jumpableSquares.push(squareToJump);
 	
 			// return the jump move only if it has no piece, 
 			// and the square bieng jumped has a piece not belonging to the current player 
-			return !jump.piece && squareToJump.piece && squareToJump.piece.color !== player.color;
+			return !jump.pos.piece && squareToJump.pos.piece && squareToJump.pos.piece.color !== player.color;
 		});
 	
-		// return the combined list of available adjacent and jump moves
-		return { availableMoves: availableAdjacentMoves.concat(availableJumpMoves), jumps: jumpableSquares };
+		var res = { availableMoves: availableAdjacentMoves.concat(availableJumpMoves), jumps: jumpableSquares };
+		console.log(res);
+	
+		// return the combined list of available adjacent and jump moves, and the jumpable squares
+		return res;
 	}
 	
 	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(493); if (makeExportsHot(module, __webpack_require__(100))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot apply hot update to " + "board.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
@@ -44969,15 +44978,21 @@
 					_reactReduxUtilities.Actions.movePiece({
 						startPos: selectedSquare.id,
 						endPos: id,
-						jump: jump,
 						piece: selectedSquare.piece
 					});
+					jump && _reactReduxUtilities.Actions.removePiece(jump);
+	
+					if (currentPlayer.color === 'red' && row === 8 || currentPlayer.color === 'black' && row === 1) {
+						_reactReduxUtilities.Actions.makeKing(id);
+					}
 	
 					if (window.socket) {
 						window.socket.emit('sendMove', window.gameID, {
+							jump: jump,
 							startPos: selectedSquare.id,
 							endPos: id,
-							piece: selectedSquare.piece
+							piece: selectedSquare.piece,
+							makeKing: currentPlayer.color === 'red' && row === 8 || currentPlayer.color === 'black' && row === 1
 						});
 						if (Math.abs(row - selectedSquare.row) === 1) {
 							_reactReduxUtilities.Actions.toggleMyTurn();

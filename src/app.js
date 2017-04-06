@@ -15,8 +15,10 @@ const myTurn = Reducer(true, {toggleMyTurn: (state, action) => !state})
 if (window.socket) {
 	let playersReady = false
 	let playerColor = 'red'
-	window.socket.on('opponentMoved', moveData => {
+	window.socket.on('opponentMoved', (moveData, jump) => {
 		Actions.movePiece(moveData)
+		moveData.jump && Actions.removePiece(moveData.jump)
+		moveData.makeKing && Actions.makeKing(moveData.endPos)
 	})
 	window.socket.on('assignPlayerColor', color => {
 		if (color === 'black') {
@@ -28,25 +30,7 @@ if (window.socket) {
 	window.socket.on('playersReady', () => Actions.playersReady())
 }
 
-/*
-const style = {
-	currentPlayer: {
-		col: {
-			height: '7%',
-			border: 'solid 3px red',
-			textAlign: 'center',
-		},
-		h2: {
-			fontSize: '5vw'
-		}
-	}
-}
-*/
-
 const App = Component({
-	selectText(e) {
-		e.target.select()
-	},
 	render() {
 		const {playersReady, currentPlayer, myTurn} = this.props
 		if (!playersReady && window.socket) return (
@@ -56,12 +40,12 @@ const App = Component({
 				<h2>
 					Send this link to a friend to start a game: 
 				</h2>
-				<input type='text' onClick={this.selectText} value={`http://playcheckerswithme.herokuapp.com/game/${window.gameID}`} />
+				<input type='text' onClick={e => e.target.select()} value={`http://localhost:3000/game/${window.gameID}`} />
 			</div>
 		)
 		else return (
 			<div style={{overflow: 'hidden'}}>
-				<a href="http://playcheckerswithme.herokuapp.com" className='newGameBtn'>New Game</a>
+				<a href="http://localhost:3000" className='newGameBtn'>New Game</a>
 				<div className="currentPlayer">
 					<h1>{window.socket && !myTurn ? 'Opponents Turn...' : `${currentPlayer.name} (${currentPlayer.color})`}</h1>
 					<h2>{window.socket && myTurn ? 'Your Move' : ''}</h2>

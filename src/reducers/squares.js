@@ -14,19 +14,22 @@ for (let row = 8; row >= 1; row--) {
 }
 
 export default Reducer(initialSquares, {
-	movePiece: (state, moveData) => {
-		return state.map(square => {
-			if (square.id === moveData.startPos || square.id === moveData.jumpPos) return {...square, piece: null}
-			else if (square.id === moveData.endPos) return {...square, piece: moveData.piece}
-			else return square
-		})
-	},
 	setSelected: (state, squareToToggle) => {
 		return state.map(square => ({...square, 
 			selected: square.id === squareToToggle ? !square.selected : false
 		}))
 	},
+	movePiece: (state, moveData) => {
+		return state.map(square => {
+			if (square.id === moveData.startPos) return {...square, piece: null}
+			else if (square.id === moveData.endPos) return {...square, piece: moveData.piece}
+			else return square
+		})
+	},
 	removePiece: (state, id) => {
 		return state.map(square => square.id === id ? {...square, piece: null} : square)
+	},
+	makeKing: (state, id) => {
+		return state.map(square => square.id === id ? {...square, piece: {...square.piece, king: true}} : square)
 	}
 })

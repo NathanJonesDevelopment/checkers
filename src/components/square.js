@@ -11,15 +11,22 @@ export default function Square(props) {
 				Actions.movePiece({
 					startPos: selectedSquare.id,
 					endPos: id,
-					jump: jump,
 					piece: selectedSquare.piece
 				})
+				jump && Actions.removePiece(jump)
+
+				if (currentPlayer.color === 'red' && row === 8
+				|| currentPlayer.color === 'black' && row === 1) {
+					Actions.makeKing(id)
+				}
 
 				if (window.socket) {
 					window.socket.emit('sendMove', window.gameID, {
+						jump,
 						startPos: selectedSquare.id,
 						endPos: id,
-						piece: selectedSquare.piece
+						piece: selectedSquare.piece,
+						makeKing: (currentPlayer.color === 'red' && row === 8) || (currentPlayer.color === 'black' && row === 1)
 					})
 					if (Math.abs(row - selectedSquare.row) === 1) {
 						Actions.toggleMyTurn()

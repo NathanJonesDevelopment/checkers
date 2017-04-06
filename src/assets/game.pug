@@ -24,7 +24,7 @@ html
 		script(src="/socket.io/socket.io.js")
 		script.
 			window.gameID = "#{gameID}";
-			window.socket = io.connect('ws://playcheckerswithme.herokuapp.com');
+			window.socket = io.connect('ws://localhost:3000');
 			window.socket.on('connect', function() {
 				window.socket.emit('joinGame', "#{gameID}");
 			});

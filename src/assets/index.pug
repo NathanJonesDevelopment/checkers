@@ -38,11 +38,11 @@ html
 				document.getElementById('root').style.display = 'block';
 			}
 			function startMultiPlayer() {
-				fetch('http://playcheckerswithme.herokuapp.com/startGame')
+				fetch('http://localhost:3000/startGame')
 					.then(function(res) { 
 						return res.text();
 					})
 					.then(function(gameID) {
-						return document.location.href = 'http://playcheckerswithme.herokuapp.com/game/' + gameID;
+						return document.location.href = 'http://localhost:3000/game/' + gameID;
 					});
 			}

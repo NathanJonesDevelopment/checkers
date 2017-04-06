@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "a052c3b3f381fa468437"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "a5c0216e030a3adb286c"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -1140,7 +1140,7 @@
 				null,
 				_react2.default.createElement(
 					'a',
-					{ href: 'http://localhost:3000', className: 'newGameBtn' },
+					{ href: 'http://playcheckerswithme.herokuapp.com', className: 'newGameBtn' },
 					'New Game'
 				),
 				_react2.default.createElement(
@@ -1155,13 +1155,13 @@
 				),
 				_react2.default.createElement('input', { type: 'text', onClick: function onClick(e) {
 						return e.target.select();
-					}, value: 'http://localhost:3000/game/' + window.gameID })
+					}, value: 'http://playcheckerswithme.herokuapp.com/game/' + window.gameID })
 			);else return _react2.default.createElement(
 				'div',
 				{ style: { overflow: 'hidden' } },
 				_react2.default.createElement(
 					'a',
-					{ href: 'http://localhost:3000', className: 'newGameBtn' },
+					{ href: 'http://playcheckerswithme.herokuapp.com', className: 'newGameBtn' },
 					'New Game'
 				),
 				_react2.default.createElement(

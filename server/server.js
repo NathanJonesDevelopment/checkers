@@ -39,7 +39,7 @@ app.get('/game/:gameID', function(req, res) {
 io.on('connection', function (socket) {
 	socket.on('joinGame', function(gameID) {
 		if (games[gameID]) {
-			games[gameID].push(socket); //{socket, player: games[gameID].length + 1});
+			games[gameID].push(socket);
 
 			socket.emit('assignPlayerColor', games[gameID].length === 1 ? 'red' : 'black');
 

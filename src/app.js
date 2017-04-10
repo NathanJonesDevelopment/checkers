@@ -6,11 +6,8 @@ import 'whatwg-fetch'
 import css from './style.scss'
 import players from './reducers/players'
 import squares from './reducers/squares'
+import multiplayerReducers from './reducers/multiplayerReducers'
 import Board from './components/board'
-
-const playersReady = Reducer(false, {playersReady: () => true})
-const playerColor = Reducer('red', {setPlayerColor: (state, color) => color})
-const myTurn = Reducer(true, {toggleMyTurn: (state, action) => !state})
 
 if (window.socket) {
 	let playersReady = false
@@ -48,7 +45,7 @@ const App = Component({
 				<a href="http://playcheckerswithme.herokuapp.com" className='newGameBtn'>New Game</a>
 				<div className="currentPlayer">
 					<h1>{window.socket && !myTurn ? 'Opponents Turn...' : `${currentPlayer.name} (${currentPlayer.color})`}</h1>
-					<h2>{window.socket && myTurn ? 'Your Move' : ''}</h2>
+					<h2>{window.socket && !myTurn ? '' : 'Your Move'}</h2>
 				</div>
 				<Board />
 			</div>
@@ -60,4 +57,4 @@ const App = Component({
 	myTurn: state.myTurn
 }))
 
-Render({squares, players, playersReady, playerColor, myTurn}, <App />)
+Render({squares, players, ...multiplayerReducers}, <App />)

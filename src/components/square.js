@@ -43,7 +43,6 @@ export default function Square(props) {
 	}
 	const style = {
 		square: {
-			//position: 'relative',
 			height: '12.5%',
 			width: '12.5%',
 			float: 'left',

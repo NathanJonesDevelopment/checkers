@@ -19,9 +19,6 @@ export default Component({
 		const size = height < width ? {height: '60vh', width: '60vh'} : {height: '70vw', width: '70vw'}
 		this.setState(size)
 	},
-	fetchData() {
-		
-	},
 	render() {
 		const {currentPlayer, squares, myTurn} = this.props
 		const selectedSquare = squares.filter(square => square.selected)[0]
@@ -47,8 +44,8 @@ export default Component({
 							&& j.pos.column - selectedSquare.column > 0 === square.column - selectedSquare.column > 0
 					})[0]
 					const canMoveHere = availableMoves && availableMoves.filter(m => m.pos.id === square.id)[0] != null
-					return <Square key={square.id} {...square} selectedSquare={selectedSquare} myTurn={myTurn}
-						jump={jump && jump.pos.id} currentPlayer={currentPlayer} canMoveHere={canMoveHere} />
+					const props = {...square, selectedSquare, myTurn, currentPlayer, canMoveHere}
+					return <Square key={square.id} jump={jump && jump.pos.id} {...props} />
 				})}
 			</div>
 		);
@@ -98,7 +95,6 @@ function getAvailableMoves({row, column, piece}, squares, player) {
 			return jump.direction.row  === adjacent.direction.row
 				&& jump.direction.column === adjacent.direction.column
 		})[0]
-		console.log(squareToJump.pos.id + ": " + squareToJump.pos.piece)
 
 		// add it to jumpableSquares, so we can removed it if it gets jumped
 		squareToJump && squareToJump.pos.piece && jumpableSquares.push(squareToJump)
@@ -109,7 +105,6 @@ function getAvailableMoves({row, column, piece}, squares, player) {
 	})
 
 	const res = {availableMoves: availableAdjacentMoves.concat(availableJumpMoves), jumps: jumpableSquares}
-	console.log(res)
 
 	// return the combined list of available adjacent and jump moves, and the jumpable squares
 	return res

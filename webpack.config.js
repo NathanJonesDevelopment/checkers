@@ -56,14 +56,6 @@ module.exports = {
 					'style-loader',
 					'css-loader?sourceMap!autoprefixer?browsers=last 3 versions!sass-loader?sourceMap'
 				)
-				/*
-				loaders: [
-					'style',
-					'css?sourceMap',
-					'autoprefixer?browsers=last 3 versions',
-					'sass?sourceMap'
-				]
-				*/
 			},
 			{
 				test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/, 
